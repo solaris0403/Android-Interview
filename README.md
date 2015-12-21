@@ -1,4 +1,4 @@
-# Android Interview Test
+# Android面试试题
 ### 一般简单题
 1. Android dvm的进程和Linux的进程，应用程序的进程是否为同一个概念？  
   DVM指Dalivk的虚拟机，每一个Android应用程序都在它自己的进程中运行，都拥有一个独立的Dalivk虚拟机实例。而每一个DVM都是在Linux中的一个进程，所以说可以认为是同一个概念。
@@ -20,6 +20,7 @@
   线程：UI thread 通常就是main thread，而Android启动程序时会替它建立一个Message Queue。  
 8. 说说MVC模式的原理，它在Android中的运用  
   MVC(Model_view_controller)” 模型_视图_控制器”。 MVC应用程序总是由这三个部分组成。Event(事件)导致Controller改变Model或View，或者同时改变两者。只要 Controller改变了Models的数据或者属性，所有依赖的View都会自动更新。类似的，只要Controller改变了View，View会从潜在的Model中获取数据来刷新自己。  
+***
 ### View重绘和内存泄露
 9. View的刷新  
   在需要刷新的地方，使用Handler.sendmessage发送消息，然后在Handler的getmessage里面执行invalidate或者invalidate  
