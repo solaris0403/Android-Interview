@@ -288,4 +288,29 @@
 　　C、 使“Java+C” 的开发方式终于转正，成为官方支持的开发方式
 
 　　D、 NDK 将是 Android 平台支持 C 开发的开端
-http://android.chinatarena.com/zhaopinmst/1558.html
+39. 我们用____int___来定义一个整数，用____char___来定义一个字符类型，称为原始数据类型。   
+40. android中常用的四个布局是__________，__________，__________和__________。   FrameLayout,LilnearLayout,RelativeLayout,TableLayout
+41. android 的四大组件是__________，Activity,Broadcast,Service,ContentProvide
+42. java.io包中的____________和____________类主要用于对对象(Object)的读写。   ObjectInputStream ObjectOutputSteam
+43. android 中service的实现方法是：_____________和_____________。startService ,bindService
+44.activity一般会重载7个方法用来维护其生命周期，除了onCreate(),onStart(),onDestory()外还有_____________,______________,____________,___________。   onRestart(),onResume(),onPause(),onStop()
+45. android的数据存储的方式_________,___________,__________,_________,________。SharedPreferences存储，文件存储，SQLite存储，ContentProvider，网络存储
+46. 当启动一个Activity并且新的Activity执行完后需要返回到启动它的Activity来执行的回调函数是____startActivityResult()_____________。
+47. 请使用命令行的方式创建一个名字为myAvd,sdk版本为2.2,sd卡是在d盘的根目录下，名字为scard.img，并指定屏幕大小HVGA.____________________________________。adnroid create acd -n myAvd -t 8 -s HVDA - Cd:\card.img
+48. 程序运行的结果是：_______good and gbc________。   
+  ```
+  public classExample{
+　　Stringstr=new String("good");
+　　char[]ch={'a','b','c'};
+　　publicstatic void main(String args[]){
+　　Exampleex=new Example();
+　　ex.change(ex.str,ex.ch);
+　　System.out.print(ex.str+"and ");
+　　Sytem.out.print(ex.ch);
+　　}
+　　public voidchange(String str,char ch[]){
+　　str="testok";
+　　ch[0]='g';
+　　}
+　　}
+  ```
