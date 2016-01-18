@@ -220,3 +220,99 @@
 	有环的定义是，链表的尾节点指向了链表中的某个节点。
 	方法一：使用p、q两个指针，p总是向前走，但q每次都从头开始走，对于每个节点，看p走的步数是否和q一样。如图，当p从6走到3时，用了6步，此时若q从head出发，则只需两步就到3，因而步数不等，出现矛盾，存在环。
 	方法二：使用p、q两个指针，p每次向前走一步，q每次向前走两步，若在某个时候p == q，则存在环。
+
+双向链表的插入操作
+	插入操作其实并不复杂，不过顺序很重要，千万不能写反了。
+	s->next = p;
+	s->prior = p->prior;
+	p->prior->next = s;
+	p->prior = s;
+	双向链表的删除操作
+	p->prior->next = p->next;
+	p->next->prior = p->prior;
+	free(p);
+	双向链表相对于单链表来说，是要更复杂一点，每个结点多了一个prior指针，对于插入和删除操作的顺序大家要格外小心。不过，双向链表可以有效提高算法的时间性能，说白了就是用空间来换取时间。
+	栈是一种重要的线性结构，可以这样讲，栈是前面讲过的线性表的一种具体形式。
+	清空一个栈
+	所谓清空一个栈，就是将栈中的元素全部作废，但栈本身物理空间并不发生改变（不是销毁）。
+	因此我们只要将s->top的内容赋值为s->base即可，这样s->base等于s->top，也就表明这个栈是空的了。
+	这个原理跟高级格式化只是但单纯地清空文件列表而没有覆盖硬盘的原理是一样的。
+	ClearStack(sqStack *s)
+	{
+		s->top = s->base;
+	}
+	销毁一个栈
+	销毁一个栈与清空一个栈不同，销毁一个栈是要释放掉该栈所占据的物理内存空间，因此不要把销毁一个栈与清空一个栈这两种操作混淆。
+	DestroyStack(sqStack *s)
+	{
+		int i, len;
+		len = s->stackSize;
+		for( i=0; i < len; i++ )
+		{
+			free( s->base );
+			s->base++;
+		}
+		s->base = s->top = NULL;
+		s->stackSize = 0;
+	}
+	计算栈的当前容量
+	计算栈的当前容量也就是计算栈中元素的个数，因此只要返回s.top-s.base即可。
+	注意，栈的最大容量是指该栈占据内存空间的大小，其值是s.stackSize，它与栈的当前容量不是一个概念哦。
+	int StackLen(sqStack s)
+	{
+		return(s.top – s.base);  // 初学者需要重点讲解
+	}
+	逆波兰计算
+	逆波兰表达式
+	a+b —> a b +
+	a+(b-c) —> a b c – +
+	a+(b-c)*d —> a b c – d * +
+	a+d*(b-c)—> a d b c – * +
+	队列的链式存储结构
+	我们将队头指针指向链队列的头结点，而队尾指针指向终端结点。（注：头结点不是必要的，但为了方便操作，我们加上了。）
+	空队列时，front和rear都指向头结点。
+	创建一个队列
+	创建一个队列要完成两个任务：一是在内存中创建一个头结点，二是将队列的头指针和尾指针都指向这个生成的头结点，因为此时是空队列。
+	入队列操作
+	InsertQueue(LinkQueue *q, ElemType e)
+	{
+		QueuePtr p;
+
+		p = (QueuePtr)malloc(sizeof(QNode));
+		if( p == NULL )
+			exit(0);
+
+		p->data = e;
+		p->next = NULL;
+		q->rear->next = p;
+		q->rear = p;
+	}
+	出队列操作
+	出队列操作是将队列中的第一个元素移出，队头指针不发生改变，改变头结点的next指针即可。
+	DeleteQueue(LinkQueue *q, ELemType *e)
+	{
+		QueuePtr p;
+
+		if( q->front == q->rear )
+			return;
+
+		p = q->front->next;
+		*e = p->data;
+		q->front->next = p->next;
+
+		if( q->rear == p )
+			q->rear = q->front;
+
+		free(p);
+	}
+	销毁一个队列
+	由于链队列建立在内存的动态区，因此当一个队列不再有用时应当把它及时销毁掉，以免过多地占用内存空间。
+	DestroyQueue(LinkQueue *q)
+	{
+		while( q->front )
+		{
+			q->rear = q->front->next;
+			free( q->front );
+			q->front = q->rear;
+		}
+	}
