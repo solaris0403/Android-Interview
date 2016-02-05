@@ -1666,3 +1666,1763 @@
   ArrayList和Vector都是使用数组方式存储数据，此数组元素数大于实际存储的数据以便增加和插入元素，它们都允许直接按序号索引元素，但是插入元素要涉及数组元素移动等内存操作，所以索引数据快而插入数据慢，Vector由于使用了synchronized方法（线程安全），通常性能上较ArrayList差，而LinkedList使用双向链表实现存储，按序号索引数据需要进行前向或后向遍历，但是插入数据时只需要记录本项的前后项即可，所以插入速度较快。
   LinkedList也是线程不安全的，LinkedList提供了一些方法，使得LinkedList可以被当作堆栈和队列来使用。 
 65、去掉一个Vector集合中重复的元素  
+  Vector newVector = new Vector();
+  For (int i=0;i<vector.size();i++)
+  {
+  Object obj = vector.get(i);
+  if(!newVector.contains(obj);
+    newVector.add(obj);
+  }
+  还有一种简单的方式，HashSet set = new HashSet(vector);  
+66. Collection 和 Collections的区别。  
+  Collection是集合类的上级接口，继承与他的接口主要有Set 和List.
+  Collections是针对集合类的一个帮助类，他提供一系列静态方法实现对各种集合的搜索、排序、线程安全化等操作。
+67. Set里的元素是不能重复的，那么用什么方法来区分重复与否呢? 是用==还是equals()? 它们有何区别?  
+   Set里的元素是不能重复的，元素重复与否是使用equals()方法进行判断的。
+   equals()和==方法决定引用值是否指向同一对象equals()在类中被覆盖，为的是当两个分离的对象的内容和类型相配的话，返回真值。 
+68、你所知道的集合类都有哪些？主要方法？ 
+  最常用的集合类是 List 和 Map。 List 的具体实现包括 ArrayList 和 Vector，它们是可变大小的列表，比较适合构建、存储和操作任何类型对象的元素列表。 List 适用于按数值索引访问元素的情形。
+  Map 提供了一个更通用的元素存储方法。 Map 集合类用于存储元素对（称作"键"和"值"），其中每个键映射到一个值。
+
+  ArrayList/VectorList
+                    Collection
+  HashSet/TreeSetSet
+
+  PropetiesHashTable
+          Map
+  Treemap/HashMap
+
+  我记的不是方法名，而是思想，我知道它们都有增删改查的方法，但这些方法的具体名称，我记得不是很清楚，对于set，大概的方法是add,remove, contains；对于map，大概的方法就是put,remove，contains等，因为，我只要在eclispe下按点操作符，很自然的这些方法就出来了。我记住的一些思想就是List类会有get(int index)这样的方法，因为它可以按顺序取元素，而set类中没有get(int index)这样的方法。List和set都可以迭代出所有元素，迭代时先要得到一个iterator对象，所以，set和list类都有一个iterator方法，用于返回那个iterator对象。map可以返回三个集合，一个是返回所有的key的集合，另外一个返回的是所有value的集合，再一个返回的key和value组合成的EntrySet对象的集合，map也有get方法，参数是key，返回值是key对应的value。  
+69. 两个对象值相同(x.equals(y) == true)，但却可有不同的hash code，这句话对不对?  
+  对。
+  如果对象要保存在HashSet或HashMap中，它们的equals相等，那么，它们的hashcode值就必须相等。
+  如果不是要保存在HashSet或HashMap，则与hashcode没有什么关系了，这时候hashcode不等是可以的，例如arrayList存储的对象就不用实现hashcode，当然，我们没有理由不实现，通常都会去实现的。 
+70、TreeSet里面放对象，如果同时放入了父类和子类的实例对象，那比较时使用的是父类的compareTo方法，还是使用的子类的compareTo方法，还是抛异常！ 
+  （应该是没有针对问题的确切的答案，当前的add方法放入的是哪个对象，就调用哪个对象的compareTo方法，至于这个compareTo方法怎么做，就看当前这个对象的类中是如何编写这个方法的）
+  实验代码：
+  public class Parent implements Comparable {
+  private int age = 0;
+  public Parent(int age){
+    this.age = age;
+  }
+  public int compareTo(Object o) {
+    // TODO Auto-generated method stub
+    System.out.println("method of parent");
+    Parent o1 = (Parent)o;
+    return age>o1.age?1:age<o1.age?-1:0;
+  }
+
+  }
+
+  public class Child extends Parent {
+
+  public Child(){
+    super(3);
+  }
+  public int compareTo(Object o) {
+
+      // TODO Auto-generated method stub
+      System.out.println("method of child");
+  //			Child o1 = (Child)o;
+      return 1;
+
+  }
+  }
+
+  public class TreeSetTest {
+
+  /**
+   * @param args
+   */
+  public static void main(String[] args) {
+    // TODO Auto-generated method stub
+    TreeSet set = new TreeSet();
+    set.add(new Parent(3));
+    set.add(new Child());
+    set.add(new Parent(4));
+    System.out.println(set.size());
+  }
+
+  } 
+71、说出一些常用的类，包，接口，请各举5个
+  要让人家感觉你对java ee开发很熟，所以，不能仅仅只列core java中的那些东西，要多列你在做ssh项目中涉及的那些东西。就写你最近写的那些程序中涉及的那些类。
+  常用的类：BufferedReader  BufferedWriter  FileReader  FileWirter  String  Integer
+  java.util.Date，System，Class，List,HashMap
+  常用的包：java.lang   java.io  java.util  java.sql ,javax.servlet,org.apache.strtuts.action,org.hibernate
+  常用的接口：Remote  List  Map  Document  NodeList ,Servlet,HttpServletRequest,HttpServletResponse,Transaction(Hibernate)、Session(Hibernate),HttpSession 
+72. java中有几种类型的流？JDK为每种类型的流提供了一些抽象类以供继承，请说出他们分别是哪些类？ 
+  字节流，字符流。字节流继承于InputStream OutputStream，字符流继承于InputStreamReader OutputStreamWriter。在java.io包中还有许多其他的流，主要是为了提高性能和使用方便。 
+73. 字节流与字符流的区别 
+  要把一片二进制数据数据逐一输出到某个设备中，或者从某个设备中逐一读取一片二进制数据，不管输入输出设备是什么，我们要用统一的方式来完成这些操作，用一种抽象的方式进行描述，这个抽象描述方式起名为IO流，对应的抽象类为OutputStream和InputStream ，不同的实现类就代表不同的输入和输出设备，它们都是针对字节进行操作的。
+  在应用中，经常要完全是字符的一段文本输出去或读进来，用字节流可以吗？计算机中的一切最终都是二进制的字节形式存在。对于“中国”这些字符，首先要得到其对应的字节，然后将字节写入到输出流。读取时，首先读到的是字节，可是我们要把它显示为字符，我们需要将字节转换成字符。由于这样的需求很广泛，人家专门提供了字符流的包装类。
+  底层设备永远只接受字节数据，有时候要写字符串到底层设备，需要将字符串转成字节再进行写入。字符流是字节流的包装，字符流则是直接接受字符串，它内部将串转成字节，再写入底层设备，这为我们向IO设别写入或读取字符串提供了一点点方便。
+  字符向字节转换时，要注意编码的问题，因为字符串转成字节数组，
+  其实是转成该字符的某种编码的字节形式，读取也是反之的道理。
+
+  讲解字节流与字符流关系的代码案例：
+  import java.io.BufferedReader;
+  import java.io.FileInputStream;
+  import java.io.FileOutputStream;
+  import java.io.FileReader;
+  import java.io.FileWriter;
+  import java.io.InputStreamReader;
+  import java.io.PrintWriter;
+
+  public class IOTest {
+  public static void main(String[] args) throws Exception {
+    String str = "中国人";
+    /*FileOutputStream fos  = new FileOutputStream("1.txt");
+
+    fos.write(str.getBytes("UTF-8"));
+    fos.close();*/
+
+    /*FileWriter fw = new FileWriter("1.txt");
+    fw.write(str);
+    fw.close();*/
+    PrintWriter pw = new PrintWriter("1.txt","utf-8");
+    pw.write(str);
+    pw.close();
+
+    /*FileReader fr = new FileReader("1.txt");
+    char[] buf = new char[1024];
+    int len = fr.read(buf);
+    String myStr = new String(buf,0,len);
+    System.out.println(myStr);*/
+    /*FileInputStream fr = new FileInputStream("1.txt");
+    byte[] buf = new byte[1024];
+    int len = fr.read(buf);
+    String myStr = new String(buf,0,len,"UTF-8");
+    System.out.println(myStr);*/
+    BufferedReader br = new BufferedReader(
+        new InputStreamReader(
+          new FileInputStream("1.txt"),"UTF-8"
+          )
+        );
+    String myStr = br.readLine();
+    br.close();
+    System.out.println(myStr);
+  }
+  }
+74. 什么是java序列化，如何实现java序列化？或者请解释Serializable接口的作用。 
+  我们有时候将一个java对象变成字节流的形式传出去或者从一个字节流中恢复成一个java对象，例如，要将java对象存储到硬盘或者传送给网络上的其他计算机，这个过程我们可以自己写代码去把一个java对象变成某个格式的字节流再传输，但是，jre本身就提供了这种支持，我们可以调用OutputStream的writeObject方法来做，如果要让java 帮我们做，要被传输的对象必须实现serializable接口，这样，javac编译时就会进行特殊处理，编译的类才可以被writeObject方法操作，这就是所谓的序列化。需要被序列化的类必须实现Serializable接口，该接口是一个mini接口，其中没有需要实现的方法，implements Serializable只是为了标注该对象是可被序列化的。
+
+
+  例如，在web开发中，如果对象被保存在了Session中，tomcat在重启时要把Session对象序列化到硬盘，这个对象就必须实现Serializable接口。如果对象要经过分布式系统进行网络传输或通过rmi等远程调用，这就需要在网络上传输对象，被传输的对象就必须实现Serializable接口。 
+75. 描述一下JVM加载class文件的原理机制? 
+  JVM中类的装载是由ClassLoader和它的子类来实现的,Java ClassLoader 是一个重要的Java运行时系统组件。它负责在运行时查找和装入类文件的类。  
+76. heap和stack有什么区别。  
+  java的内存分为两类，一类是栈内存，一类是堆内存。栈内存是指程序进入一个方法时，会为这个方法单独分配一块私属存储空间，用于存储这个方法内部的局部变量，当这个方法结束时，分配给这个方法的栈会释放，这个栈中的变量也将随之释放。
+  堆是与栈作用不同的内存，一般用于存放不放在当前方法栈中的那些数据，例如，使用new创建的对象都放在堆里，所以，它不会随方法的结束而消失。方法中的局部变量使用final修饰后，放在堆中，而不是栈中。 
+77. GC是什么? 为什么要有GC?  
+  GC是垃圾收集的意思（Gabage Collection）,内存处理是编程人员容易出现问题的地方，忘记或者错误的内存回收会导致程序或系统的不稳定甚至崩溃，Java提供的GC功能可以自动监测对象是否超过作用域从而达到自动回收内存的目的，Java语言没有提供释放已分配内存的显示操作方法。 
+78. 垃圾回收的优点和原理。并考虑2种回收机制。 
+  Java语言中一个显著的特点就是引入了垃圾回收机制，使c++程序员最头疼的内存管理的问题迎刃而解，它使得Java程序员在编写程序的时候不再需要考虑内存管理。由于有个垃圾回收机制，Java中的对象不再有"作用域"的概念，只有对象的引用才有"作用域"。垃圾回收可以有效的防止内存泄露，有效的使用可以使用的内存。垃圾回收器通常是作为一个单独的低级别的线程运行，不可预知的情况下对内存堆中已经死亡的或者长时间没有使用的对象进行清楚和回收，程序员不能实时的调用垃圾回收器对某个对象或所有对象进行垃圾回收。回收机制有分代复制垃圾回收和标记垃圾回收，增量垃圾回收。 
+79. 垃圾回收器的基本原理是什么？垃圾回收器可以马上回收内存吗？有什么办法主动通知虚拟机进行垃圾回收？  
+  对于GC来说，当程序员创建对象时，GC就开始监控这个对象的地址、大小以及使用情况。通常，GC采用有向图的方式记录和管理堆(heap)中的所有对象。通过这种方式确定哪些对象是"可达的"，哪些对象是"不可达的"。当GC确定一些对象为"不可达"时，GC就有责任回收这些内存空间。可以。程序员可以手动执行System.gc()，通知GC运行，但是Java语言规范并不保证GC一定会执行。  
+80、什么时候用assert。  
+  assertion(断言)在软件开发中是一种常用的调试方式，很多开发语言中都支持这种机制。在实现中，assertion就是在程序中的一条语句，它对一个boolean表达式进行检查，一个正确程序必须保证这个boolean表达式的值为true；如果该值为false，说明程序已经处于不正确的状态下，assert将给出警告或退出。一般来说，assertion用于保证程序最基本、关键的正确性。assertion检查通常在开发和测试时开启。为了提高性能，在软件发布后，assertion检查通常是关闭的。
+  package com.huawei.interview;
+
+  public class AssertTest {
+
+  /**
+   * @param args
+   */
+  public static void main(String[] args) {
+    // TODO Auto-generated method stub
+    int i = 0;
+    for(i=0;i<5;i++)
+    {
+      System.out.println(i);
+    }
+    //假设程序不小心多了一句--i;
+    --i;
+    assert i==5;		
+  }
+  }
+81. java中会存在内存泄漏吗，请简单描述。 
+  所谓内存泄露就是指一个不再被程序使用的对象或变量一直被占据在内存中。java中有垃圾回收机制，它可以保证一对象不再被引用的时候，即对象编程了孤儿的时候，对象将自动被垃圾回收器从内存中清除掉。由于Java 使用有向图的方式进行垃圾回收管理，可以消除引用循环的问题，例如有两个对象，相互引用，只要它们和根进程不可达的，那么GC也是可以回收它们的，例如下面的代码可以看到这种情况的内存回收：
+  package com.huawei.interview;
+
+  import java.io.IOException;
+
+  public class GarbageTest {
+
+  /**
+   * @param args
+   * @throws IOException
+   */
+  public static void main(String[] args) throws IOException {
+    // TODO Auto-generated method stub
+    try {
+      gcTest();
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    System.out.println("has exited gcTest!");
+    System.in.read();
+    System.in.read();		
+    System.out.println("out begin gc!");		
+    for(int i=0;i<100;i++)
+    {
+      System.gc();
+      System.in.read();
+      System.in.read();
+    }
+  }
+
+  private static void gcTest() throws IOException {
+    System.in.read();
+    System.in.read();		
+    Person p1 = new Person();
+    System.in.read();
+    System.in.read();		
+    Person p2 = new Person();
+    p1.setMate(p2);
+    p2.setMate(p1);
+    System.out.println("before exit gctest!");
+    System.in.read();
+    System.in.read();		
+    System.gc();
+    System.out.println("exit gctest!");
+  }
+
+  private static class Person
+  {
+    byte[] data = new byte[20000000];
+    Person mate = null;
+    public void setMate(Person other)
+    {
+      mate = other;
+    }
+  }
+  }
+
+  java中的内存泄露的情况：长生命周期的对象持有短生命周期对象的引用就很可能发生内存泄露，尽管短生命周期对象已经不再需要，但是因为长生命周期对象持有它的引用而导致不能被回收，这就是java中内存泄露的发生场景，通俗地说，就是程序员可能创建了一个对象，以后一直不再使用这个对象，这个对象却一直被引用，即这个对象无用但是却无法被垃圾回收器回收的，这就是java中可能出现内存泄露的情况，例如，缓存系统，我们加载了一个对象放在缓存中(例如放在一个全局map对象中)，然后一直不再使用它，这个对象一直被缓存引用，但却不再被使用。
+  检查java中的内存泄露，一定要让程序将各种分支情况都完整执行到程序结束，然后看某个对象是否被使用过，如果没有，则才能判定这个对象属于内存泄露。
+
+  如果一个外部类的实例对象的方法返回了一个内部类的实例对象，这个内部类对象被长期引用了，即使那个外部类实例对象不再被使用，但由于内部类持久外部类的实例对象，这个外部类对象将不会被垃圾回收，这也会造成内存泄露。
+
+  下面内容来自于网上（主要特点就是清空堆栈中的某个元素，并不是彻底把它从数组中拿掉，而是把存储的总数减少，本人写得可以比这个好，在拿掉某个元素时，顺便也让它从数组中消失，将那个元素所在的位置的值设置为null即可）：
+
+  我实在想不到比那个堆栈更经典的例子了,以致于我还要引用别人的例子，下面的例子不是我想到的，是书上看到的，当然如果没有在书上看到，可能过一段时间我自己也想的到，可是那时我说是我自己想到的也没有人相信的。
+
+
+      public class Stack {
+      private Object[] elements=new Object[10];
+      private int size = 0;
+      public void push(Object e){
+      ensureCapacity();
+      elements[size++] = e;
+      }
+      public Object pop(){
+      if( size == 0)
+
+
+      throw new EmptyStackException();
+      return elements[--size];
+      }
+      private void ensureCapacity(){
+      if(elements.length == size){
+      Object[] oldElements = elements;
+      elements = new Object[2 * elements.length+1];
+      System.arraycopy(oldElements,0, elements, 0, size);
+      }
+      }
+      }
+      上面的原理应该很简单，假如堆栈加了10个元素，然后全部弹出来，虽然堆栈是空的，没有我们要的东西，但是这是个对象是无法回收的，这个才符合了内存泄露的两个条件：无用，无法回收。
+
+
+      但是就是存在这样的东西也不一定会导致什么样的后果，如果这个堆栈用的比较少，也就浪费了几个K内存而已，反正我们的内存都上G了，哪里会有什么影响，再说这个东西很快就会被回收的，有什么关系。下面看两个例子。
+
+
+      例子1
+      public class Bad{
+      public static Stack s=Stack();
+      static{
+      s.push(new Object());
+      s.pop(); //这里有一个对象发生内存泄露
+      s.push(new Object()); //上面的对象可以被回收了，等于是自愈了
+      }
+      }
+      因为是static，就一直存在到程序退出，但是我们也可以看到它有自愈功能，就是说如果你的Stack最多有100个对象，那么最多也就只有100个对象无法被回收其实这个应该很容易理解，Stack内部持有100个引用，最坏的情况就是他们都是无用的，因为我们一旦放新的进取，以前的引用自然消失！
+
+
+  内存泄露的另外一种情况：当一个对象被存储进HashSet集合中以后，就不能修改这个对象中的那些参与计算哈希值的字段了，否则，对象修改后的哈希值与最初存储进HashSet集合中时的哈希值就不同了，在这种情况下，即使在contains方法使用该对象的当前引用作为的参数去HashSet集合中检索对象，也将返回找不到对象的结果，这也会导致无法从HashSet集合中单独删除当前对象，造成内存泄露。  
+82. 能不能自己写个类，也叫java.lang.String？ 
+  可以，但在应用的时候，需要用自己的类加载器去加载，否则，系统的类加载器永远只是去加载jre.jar包中的那个java.lang.String。由于在tomcat的web应用程序中，都是由webapp自己的类加载器先自己加载WEB-INF/classess目录中的类，然后才委托上级的类加载器加载，如果我们在tomcat的web应用程序中写一个java.lang.String，这时候Servlet程序加载的就是我们自己写的java.lang.String，但是这么干就会出很多潜在的问题，原来所有用了java.lang.String类的都将出现问题。
+
+  虽然java提供了endorsed技术，可以覆盖jdk中的某些类，具体做法是….。但是，能够被覆盖的类是有限制范围，反正不包括java.lang这样的包中的类。
+
+  （下面的例如主要是便于大家学习理解只用，不要作为答案的一部分，否则，人家怀疑是题目泄露了）例如，运行下面的程序：
+  package java.lang;
+
+  public class String {
+
+  /**
+   * @param args
+   */
+  public static void main(String[] args) {
+    // TODO Auto-generated method stub
+    System.out.println("string");
+  }
+
+  }
+  报告的错误如下：
+  java.lang.NoSuchMethodError: main
+  Exception in thread "main"
+  这是因为加载了jre自带的java.lang.String，而该类中没有main方法。 
+83. Java代码查错 
+    1.
+    abstract class Name {
+       private String name;
+       public abstract boolean isStupidName(String name) {}
+    }
+    大侠们，这有何错误?
+    答案: 错。abstract method必须以分号结尾，且不带花括号。
+    2.
+    public class Something {
+       void doSomething () {
+           private String s = "";
+           int l = s.length();
+       }
+    }
+    有错吗?
+    答案: 错。局部变量前不能放置任何访问修饰符 (private，public，和protected)。final可以用来修饰局部变量
+    (final如同abstract和strictfp，都是非访问修饰符，strictfp只能修饰class和method而非variable)。
+    3.
+    abstract class Something {
+       private abstract String doSomething ();
+    }
+    这好像没什么错吧?
+    答案: 错。abstract的methods不能以private修饰。abstract的methods就是让子类implement(实现)具体细节的，怎么可以用private把abstract
+    method封锁起来呢? (同理，abstract method前不能加final)。
+    4.
+    public class Something {
+       public int addOne(final int x) {
+           return ++x;
+       }
+    }
+    这个比较明显。
+    答案: 错。int x被修饰成final，意味着x不能在addOne method中被修改。
+    5.
+    public class Something {
+       public static void main(String[] args) {
+           Other o = new Other();
+           new Something().addOne(o);
+       }
+       public void addOne(final Other o) {
+           o.i++;
+       }
+    }
+    class Other {
+       public int i;
+    }
+    和上面的很相似，都是关于final的问题，这有错吗?
+    答案: 正确。在addOne method中，参数o被修饰成final。如果在addOne method里我们修改了o的reference
+    (比如: o = new Other();)，那么如同上例这题也是错的。但这里修改的是o的member vairable
+    (成员变量)，而o的reference并没有改变。
+    6.
+    class Something {
+        int i;
+        public void doSomething() {
+            System.out.println("i = " + i);
+        }
+    }
+    有什么错呢? 看不出来啊。
+    答案: 正确。输出的是"i = 0"。int i属於instant variable (实例变量，或叫成员变量)。instant variable有default value。int的default value是0。
+    7.
+    class Something {
+        final int i;
+        public void doSomething() {
+            System.out.println("i = " + i);
+        }
+    }
+    和上面一题只有一个地方不同，就是多了一个final。这难道就错了吗?
+    答案: 错。final int i是个final的instant variable (实例变量，或叫成员变量)。final的instant variable没有default value，必须在constructor (构造器)结束之前被赋予一个明确的值。可以修改为"final int i = 0;"。
+    8.
+    public class Something {
+         public static void main(String[] args) {
+            Something s = new Something();
+            System.out.println("s.doSomething() returns " + doSomething());
+        }
+        public String doSomething() {
+            return "Do something ...";
+        }
+    }
+     看上去很完美。
+    答案: 错。看上去在main里call doSomething没有什么问题，毕竟两个methods都在同一个class里。但仔细看，main是static的。static method不能直接call non-static methods。可改成"System.out.println("s.doSomething() returns " + s.doSomething());"。同理，static method不能访问non-static instant variable。
+    9.
+    此处，Something类的文件名叫OtherThing.java
+    class Something {
+        private static void main(String[] something_to_do) {       
+            System.out.println("Do something ...");
+        }
+    }
+     这个好像很明显。
+    答案: 正确。从来没有人说过Java的Class名字必须和其文件名相同。但public class的名字必须和文件名相同。
+    10．
+    interface  A{
+       int x = 0;
+    }
+    class B{
+       int x =1;
+    }
+    class C extends B implements A {
+       public void pX(){
+          System.out.println(x);
+       }
+       public static void main(String[] args) {
+          new C().pX();
+       }
+    }
+    答案：错误。在编译时会发生错误(错误描述不同的JVM有不同的信息，意思就是未明确的x调用，两个x都匹配（就象在同时import java.util和java.sql两个包时直接声明Date一样）。对于父类的变量,可以用super.x来明确，而接口的属性默认隐含为 public static final.所以可以通过A.x来明确。
+    11.
+    interface Playable {
+        void play();
+    }
+    interface Bounceable {
+        void play();
+    }
+    interface Rollable extends Playable, Bounceable {
+        Ball ball = new Ball("PingPang");
+    }
+    class Ball implements Rollable {
+        private String name;
+        public String getName() {
+            return name;
+        }
+        public Ball(String name) {
+            this.name = name;       
+        }
+       public void play() {
+            ball = new Ball("Football");
+            System.out.println(ball.getName());
+        }
+    }
+    这个错误不容易发现。
+    答案: 错。"interface Rollable extends Playable, Bounceable"没有问题。interface可继承多个interfaces，所以这里没错。问题出在interface Rollable里的"Ball ball = new Ball("PingPang");"。任何在interface里声明的interface variable (接口变量，也可称成员变量)，默认为public static final。也就是说"Ball ball = new Ball("PingPang");"实际上是"public static final Ball ball = new Ball("PingPang");"。在Ball类的Play()方法中，"ball = new Ball("Football");"改变了ball的reference，而这里的ball来自Rollable interface，Rollable interface里的ball是public static final的，final的object是不能被改变reference的。因此编译器将在"ball = new Ball("Football");"这里显示有错。 
+二. 算法与编程 
+1、编写一个程序，将a.txt文件中的单词与b.txt文件中的单词交替合并到c.txt文件中，a.txt文件中的单词用回车符分隔，b.txt文件中用回车或空格进行分隔。 
+  答：
+    package cn.itcast;
+
+  import java.io.File;
+  import java.io.FileReader;
+  import java.io.FileWriter;
+
+  public class MainClass{
+  public static void main(String[] args) throws Exception{
+    FileManager a = new FileManager("a.txt",new char[]{'\n'});
+    FileManager b = new FileManager("b.txt",new char[]{'\n',' '});		
+    FileWriter c = new FileWriter("c.txt");
+    String aWord = null;
+    String bWord = null;
+    while((aWord = a.nextWord()) !=null ){
+      c.write(aWord + "\n");
+      bWord = b.nextWord();
+      if(bWord != null)
+        c.write(bWord + "\n");
+    }
+
+    while((bWord = b.nextWord()) != null){
+      c.write(bWord + "\n");
+    }
+    c.close();
+  }
+
+  }
+
+
+  class FileManager{
+
+  String[] words = null;
+  int pos = 0;
+  public FileManager(String filename,char[] seperators) throws Exception{
+    File f = new File(filename);
+    FileReader reader = new FileReader(f);
+    char[] buf = new char[(int)f.length()];
+    int len = reader.read(buf);
+    String results = new String(buf,0,len);
+    String regex = null;
+    if(seperators.length >1 ){
+      regex = "" + seperators[0] + "|" + seperators[1];
+    }else{
+      regex = "" + seperators[0];
+    }
+    words = results.split(regex);
+  }
+
+  public String nextWord(){
+    if(pos == words.length)
+      return null;
+    return words[pos++];
+  }
+  }
+2、编写一个程序，将d:\java目录下的所有.java文件复制到d:\jad目录下，并将原来文件的扩展名从.java改为.jad。 
+    （大家正在做上面这道题，网上迟到的朋友也请做做这道题，找工作必须能编写这些简单问题的代码！）
+    答：listFiles方法接受一个FileFilter对象，这个FileFilter对象就是过虑的策略对象，不同的人提供不同的FileFilter实现，即提供了不同的过滤策略。
+    import java.io.File;
+    import java.io.FileInputStream;
+    import java.io.FileOutputStream;
+    import java.io.FilenameFilter;
+    import java.io.IOException;
+    import java.io.InputStream;
+    import java.io.OutputStream;
+
+    public class Jad2Java {
+
+    public static void main(String[] args) throws Exception {
+      File srcDir = new File("java");
+      if(!(srcDir.exists() && srcDir.isDirectory()))
+          throw new Exception("目录不存在");
+      File[] files = srcDir.listFiles(
+        new FilenameFilter(){
+
+            public boolean accept(File dir, String name) {
+              return name.endsWith(".java");
+            }
+
+          }
+      );
+
+      System.out.println(files.length);
+      File destDir = new File("jad");
+      if(!destDir.exists()) destDir.mkdir();
+      for(File f :files){
+        FileInputStream  fis = new FileInputStream(f);
+        String destFileName = f.getName().replaceAll("\\.java$", ".jad");
+        FileOutputStream fos = new FileOutputStream(new File(destDir,destFileName));
+        copy(fis,fos);
+        fis.close();
+        fos.close();
+      }
+    }
+
+    private static void copy(InputStream ips,OutputStream ops) throws Exception{
+      int len = 0;
+      byte[] buf = new byte[1024];
+      while((len = ips.read(buf)) != -1){
+        ops.write(buf,0,len);
+      }
+
+    }
+    }
+
+    由本题总结的思想及策略模式的解析：
+    1.
+    class jad2java{
+    1. 得到某个目录下的所有的java文件集合
+      1.1 得到目录 File srcDir = new File("d:\\java");
+      1.2 得到目录下的所有java文件：File[] files = srcDir.listFiles(new MyFileFilter());
+      1.3 只想得到.java的文件： class MyFileFilter implememyts FileFilter{
+        public boolean accept(File pathname){
+          return pathname.getName().endsWith(".java")
+        }
+      }
+
+    2.将每个文件复制到另外一个目录，并改扩展名
+      2.1 得到目标目录，如果目标目录不存在，则创建之
+      2.2 根据源文件名得到目标文件名，注意要用正则表达式，注意.的转义。
+      2.3 根据表示目录的File和目标文件名的字符串，得到表示目标文件的File。
+        //要在硬盘中准确地创建出一个文件，需要知道文件名和文件的目录。
+      2.4 将源文件的流拷贝成目标文件流，拷贝方法独立成为一个方法，方法的参数采用抽象流的形式。
+        //方法接受的参数类型尽量面向父类，越抽象越好，这样适应面更宽广。
+    }
+
+    分析listFiles方法内部的策略模式实现原理
+    File[] listFiles(FileFilter filter){
+    File[] files = listFiles();
+    //Arraylist acceptedFilesList = new ArrayList();
+    File[] acceptedFiles = new File[files.length];
+    int pos = 0;
+    for(File file: files){
+      boolean accepted = filter.accept(file);
+      if(accepted){
+        //acceptedFilesList.add(file);
+        acceptedFiles[pos++] = file;
+      }		
+    }
+
+    Arrays.copyOf(acceptedFiles,pos);
+    //return (File[])accpetedFilesList.toArray();
+
+    }  
+3、编写一个截取字符串的函数，输入为一个字符串和字节数，输出为按字节截取的字符串，但要保证汉字不被截取半个，如“我ABC”，4，应该截取“我AB”，输入“我ABC汉DEF”，6，应该输出“我ABC”，而不是“我ABC+汉的半个”。 
+  答：
+  首先要了解中文字符有多种编码及各种编码的特征。
+    假设n为要截取的字节数。
+  public static void main(String[] args) throws Exception{
+    String str = "我a爱中华abc我爱传智def';
+    String str = "我ABC汉";
+    int num = trimGBK(str.getBytes("GBK"),5);
+    System.out.println(str.substring(0,num) );
+  }
+
+  public static int  trimGBK(byte[] buf,int n){
+    int num = 0;
+    boolean bChineseFirstHalf = false;
+    for(int i=0;i<n;i++)
+    {
+      if(buf[i]<0 && !bChineseFirstHalf){
+        bChineseFirstHalf = true;
+      }else{
+        num++;
+        bChineseFirstHalf = false;				
+      }
+    }
+    return num;
+  } 
+4. 有一个字符串，其中包含中文字符、英文字符和数字字符，请统计和打印出各个字符的个数。 
+  答：哈哈，其实包含中文字符、英文字符、数字字符原来是出题者放的烟雾弹。
+  String content = “中国aadf的111萨bbb菲的zz萨菲”;
+  HashMap map = new HashMap();
+  for(int i=0;i<content.length;i++)
+  {
+  char c = content.charAt(i);
+  Integer num = map.get(c);
+  if(num == null)
+    num = 1;
+  else
+    num = num + 1;
+  map.put(c,num);
+  }
+  for(Map.EntrySet entry : map)
+  {
+  system.out.println(entry.getkey() + “:” + entry.getValue());
+  }
+  估计是当初面试的那个学员表述不清楚，问题很可能是：
+  如果一串字符如"aaaabbc中国1512"要分别统计英文字符的数量，中文字符的数量，和数字字符的数量，假设字符中没有中文字符、英文字符、数字字符之外的其他特殊字符。
+  int engishCount;
+  int chineseCount;
+  int digitCount;
+  for(int i=0;i<str.length;i++)
+  {
+  char ch = str.charAt(i);
+  if(ch>=’0’ && ch<=’9’)
+  {
+    digitCount++
+  }
+  else if((ch>=’a’ && ch<=’z’) || (ch>=’A’ && ch<=’Z’))
+  {
+    engishCount++;
+  }
+  else
+  {
+    chineseCount++;
+  }
+  }
+  System.out.println(……………); 
+5. 说明生活中遇到的二叉树，用java实现二叉树 
+  这是组合设计模式。
+  我有很多个(假设10万个)数据要保存起来，以后还需要从保存的这些数据中检索是否存在某个数据，（我想说出二叉树的好处，该怎么说呢？那就是说别人的缺点），假如存在数组中，那么，碰巧要找的数字位于99999那个地方，那查找的速度将很慢，因为要从第1个依次往后取，取出来后进行比较。平衡二叉树（构建平衡二叉树需要先排序，我们这里就不作考虑了）可以很好地解决这个问题，但二叉树的遍历（前序，中序，后序）效率要比数组低很多，原理如下图：
+
+  代码如下：
+  package com.huawei.interview;
+
+  public class Node {
+  public int value;
+  public Node left;
+  public Node right;
+
+  public void store(int value)
+  {
+    if(value<this.value)
+    {
+      if(left == null)
+      {
+        left = new Node();
+        left.value=value;
+      }
+      else
+      {
+        left.store(value);
+      }
+    }
+    else if(value>this.value)
+    {
+      if(right == null)
+      {
+        right = new Node();
+        right.value=value;
+      }
+      else
+      {
+        right.store(value);
+      }			
+    }
+  }
+
+  public boolean find(int value)
+  {
+    System.out.println("happen " + this.value);
+    if(value == this.value)
+    {
+      return true;
+    }
+    else if(value>this.value)
+    {
+      if(right == null) return false;
+      return right.find(value);
+    }else
+    {
+      if(left == null) return false;
+      return left.find(value);
+    }
+
+  }
+
+  public  void preList()
+  {
+    System.out.print(this.value + ",");
+    if(left!=null) left.preList();
+    if(right!=null) right.preList();
+  }
+
+  public void middleList()
+  {
+    if(left!=null) left.preList();
+    System.out.print(this.value + ",");
+    if(right!=null) right.preList();		
+  }
+  public void afterList()
+  {
+    if(left!=null) left.preList();
+    if(right!=null) right.preList();
+    System.out.print(this.value + ",");		
+  }
+  public static void main(String [] args)
+  {
+    int [] data = new int[20];
+    for(int i=0;i<data.length;i++)
+    {
+      data[i] = (int)(Math.random()*100) + 1;
+      System.out.print(data[i] + ",");
+    }
+    System.out.println();
+
+    Node root = new Node();
+    root.value = data[0];
+    for(int i=1;i<data.length;i++)
+    {
+      root.store(data[i]);
+    }
+
+    root.find(data[19]);
+
+    root.preList();
+    System.out.println();
+    root.middleList();
+    System.out.println();		
+    root.afterList();
+  }
+  }
+  -----------------又一次临场写的代码---------------------------
+  import java.util.Arrays;
+  import java.util.Iterator;
+
+  public class Node {
+  private Node left;
+  private Node right;
+  private int value;
+  //private int num;
+
+  public Node(int value){
+    this.value = value;
+  }
+  public void add(int value){
+
+    if(value > this.value)
+    {
+      if(right != null)
+        right.add(value);
+      else
+      {
+        Node node = new Node(value);				
+        right = node;
+      }
+    }
+    else{
+      if(left != null)
+        left.add(value);
+      else
+      {
+        Node node = new Node(value);				
+        left = node;
+      }			
+    }
+  }
+
+  public boolean find(int value){
+    if(value == this.value) return true;
+    else if(value > this.value){
+      if(right == null) return false;
+      else return right.find(value);
+    }else{
+      if(left == null) return false;
+      else return left.find(value);			
+    }
+
+  }
+
+  public void display(){
+    System.out.println(value);
+    if(left != null) left.display();
+    if(right != null) right.display();
+
+  }
+
+  /*public Iterator iterator(){
+
+  }*/
+
+  public static void main(String[] args){
+    int[] values = new int[8];
+    for(int i=0;i<8;i++){
+      int num = (int)(Math.random() * 15);
+      //System.out.println(num);
+      //if(Arrays.binarySearch(values, num)<0)
+      if(!contains(values,num))
+        values[i] = num;
+      else
+        i--;
+    }
+
+    System.out.println(Arrays.toString(values));
+
+    Node root  = new Node(values[0]);
+    for(int i=1;i<values.length;i++){
+      root.add(values[i]);
+    }
+
+    System.out.println(root.find(13));
+
+    root.display();
+
+  }
+
+  public static boolean contains(int [] arr, int value){
+    int i = 0;
+    for(;i<arr.length;i++){
+      if(arr[i] == value) return true;
+
+    }
+    return false;
+  }
+  }
+6、从类似如下的文本文件中读取出所有的姓名，并打印出重复的姓名和重复的次数，并按重复次数排序： 
+  1,张三,28
+  2,李四,35
+  3,张三,28
+  4,王五,35
+  5,张三,28
+  6,李四,35
+  7,赵六,28
+  8,田七,35
+
+  程序代码如下（答题要博得用人单位的喜欢，包名用该公司，面试前就提前查好该公司的网址，如果查不到，现场问也是可以的。还要加上实现思路的注释）：
+  package com.huawei.interview;
+
+  import java.io.BufferedReader;
+  import java.io.IOException;
+  import java.io.InputStream;
+  import java.io.InputStreamReader;
+  import java.util.Comparator;
+  import java.util.HashMap;
+  import java.util.Iterator;
+  import java.util.Map;
+  import java.util.TreeSet;
+
+
+  public class GetNameTest {
+
+  /**
+   * @param args
+   */
+  public static void main(String[] args) {
+    // TODO Auto-generated method stub
+    //InputStream ips = GetNameTest.class.getResourceAsStream("/com/huawei/interview/info.txt");
+    //用上一行注释的代码和下一行的代码都可以，因为info.txt与GetNameTest类在同一包下面，所以，可以用下面的相对路径形式
+
+    Map results = new HashMap();
+    InputStream ips = GetNameTest.class.getResourceAsStream("info.txt");
+    BufferedReader in = new BufferedReader(new InputStreamReader(ips));
+    String line = null;
+    try {
+      while((line=in.readLine())!=null)
+      {
+        dealLine(line,results);
+      }
+      sortResults(results);
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+  }
+
+  static class User
+  {
+    public  String name;
+    public Integer value;
+    public User(String name,Integer value)
+    {
+      this.name = name;
+      this.value = value;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+      // TODO Auto-generated method stub
+
+      //下面的代码没有执行，说明往treeset中增加数据时，不会使用到equals方法。
+      boolean result = super.equals(obj);
+      System.out.println(result);
+      return result;
+    }
+  }
+
+  private static void sortResults(Map results) {
+    // TODO Auto-generated method stub
+    TreeSet sortedResults = new TreeSet(
+        new Comparator(){
+          public int compare(Object o1, Object o2) {
+            // TODO Auto-generated method stub
+            User user1 = (User)o1;
+            User user2 = (User)o2;
+            /*如果compareTo返回结果0，则认为两个对象相等，新的对象不会增加到集合中去
+             * 所以，不能直接用下面的代码，否则，那些个数相同的其他姓名就打印不出来。
+             * */
+
+            //return user1.value-user2.value;
+            //return user1.value<user2.value?-1:user1.value==user2.value?0:1;
+            if(user1.value<user2.value)
+            {
+              return -1;
+            }else if(user1.value>user2.value)
+            {
+              return 1;
+            }else
+            {
+              return user1.name.compareTo(user2.name);
+            }
+          }
+
+        }
+    );
+    Iterator iterator = results.keySet().iterator();
+    while(iterator.hasNext())
+    {
+      String name = (String)iterator.next();
+      Integer value = (Integer)results.get(name);
+      if(value > 1)
+      {				
+        sortedResults.add(new User(name,value));				
+      }
+    }
+
+    printResults(sortedResults);
+  }
+  private static void printResults(TreeSet sortedResults)
+  {
+    Iterator iterator  = sortedResults.iterator();
+    while(iterator.hasNext())
+    {
+      User user = (User)iterator.next();
+      System.out.println(user.name + ":" + user.value);
+    }
+  }
+  public static void dealLine(String line,Map map)
+  {
+    if(!"".equals(line.trim()))
+    {
+      String [] results = line.split(",");
+      if(results.length == 3)
+      {
+        String name = results[1];
+        Integer value = (Integer)map.get(name);
+        if(value == null) value = 0;
+        map.put(name,value + 1);
+      }
+    }
+  }
+  }
+7、写一个Singleton出来。 
+  第一种：饱汉模式
+  public class SingleTon {
+  private SingleTon(){
+    }
+
+  //实例化放在静态代码块里可提高程序的执行效率，但也可能更占用空间
+  private final static SingleTon instance = new SingleTon();
+  public static SingleTon getInstance(){
+    return instance;
+  }
+  }
+
+  第二种：饥汉模式
+  public class SingleTon {
+  private SingleTon(){}
+
+  private static instance = null;//new SingleTon();
+
+  public static synchronized SingleTon getInstance(){
+    if(instance == null)
+      instance = new SingleTon();
+    return instance;
+  }
+  }
+
+  第三种：用枚举
+  public enum SingleTon{
+    ONE;
+
+  }
+
+  第三：更实际的应用（在什么情况用单例）
+  public class SequenceGenerator{
+  //下面是该类自身的业务功能代码
+  private int count = 0;
+
+  public synchronized int getSequence(){
+    ++count;
+  }
+
+  //下面是把该类变成单例的代码
+  private SequenceGenerator(){}
+  private final static instance = new SequenceGenerator();
+  public static SingleTon getInstance(){
+    return instance;
+  }
+
+  }
+
+  第四：
+  public class MemoryDao
+  {
+    private HashMap map = new HashMap();
+
+    public void add(Student stu1){
+        map.put(SequenceGenerator.getInstance().getSequence(),stu1);
+    }
+
+   //把MemoryDao变成单例
+  }
+
+
+
+
+
+
+  Singleton模式主要作用是保证在Java应用程序中，一个类Class只有一个实例存在。
+  一般Singleton模式通常有几种种形式:
+  第一种形式: 定义一个类，它的构造函数为private的，它有一个static的private的该类变量，在类初始化时实例话，通过一个public的getInstance方法获取对它的引用,继而调用其中的方法。
+  public class Singleton {
+  private Singleton(){}
+  　　    //在自己内部定义自己一个实例，是不是很奇怪？
+  　　    //注意这是private 只供内部调用
+  　　    private static Singleton instance = new Singleton();
+  　　    //这里提供了一个供外部访问本class的静态方法，可以直接访问　　
+  　　    public static Singleton getInstance() {
+  　　　　    return instance; 　　
+  　　    }
+   }
+   第二种形式:
+  public class Singleton {
+  　　private static Singleton instance = null;
+  　　public static synchronized Singleton getInstance() {
+  　　//这个方法比上面有所改进，不用每次都进行生成对象，只是第一次　　　 　
+  　　//使用时生成实例，提高了效率！
+  　　if (instance==null)
+  　　　　instance＝new Singleton();
+      return instance; 　　
+  }
+  }
+  其他形式:
+  定义一个类，它的构造函数为private的，所有方法为static的。
+  一般认为第一种形式要更加安全些    
+8、递归算法题1 
+  一个整数，大于0，不用循环和本地变量，按照n，2n，4n，8n的顺序递增，当值大于5000时，把值按照指定顺序输出来。
+  例：n=1237
+  则输出为：
+  1237，
+  2474，
+  4948，
+  9896，
+  9896，
+  4948，
+  2474，
+  1237，
+  提示：写程序时，先致谢按递增方式的代码，写好递增的以后，再增加考虑递减部分。
+  public static void doubleNum(int n)
+  {
+    System.out.println(n);
+    if(n<=5000)
+      doubleNum(n*2);
+    System.out.println(n);		
+  } 
+9、递归算法题2 
+  第1个人10，第2个比第1个人大2岁，依次递推，请用递归方式计算出第8个人多大？
+  package cn.itcast;
+
+  import java.util.Date;
+
+  public class A1 {
+
+  public static void main(String [] args)
+  {
+    System.out.println(computeAge(8));
+  }
+
+  public static int computeAge(int n)
+  {
+    if(n==1) return 10;
+    return computeAge(n-1) + 2;
+  }
+  }
+
+  public static void toBinary(int n,StringBuffer result)
+  {
+
+    if(n/2 != 0)
+      toBinary(n/2,result);
+    result.append(n%2);		
+  } 
+10、排序都有哪几种方法？请列举。用JAVA实现一个快速排序。 
+  本人只研究过冒泡排序、选择排序和快速排序，下面是快速排序的代码：
+
+  public class QuickSort {
+  /**
+  * 快速排序
+  * @param strDate
+  * @param left
+  * @param right
+  */
+  public void quickSort(String[] strDate,int left,int right){
+  String middle,tempDate;
+  int i,j;
+  i=left;
+  j=right;
+  middle=strDate[(i+j)/2];
+  do{
+  while(strDate[i].compareTo(middle)<0&& i<right)
+  i++; //找出左边比中间值大的数
+  while(strDate[j].compareTo(middle)>0&& j>left)
+  j--; //找出右边比中间值小的数
+  if(i<=j){ //将左边大的数和右边小的数进行替换
+  tempDate=strDate[i];
+  strDate[i]=strDate[j];
+  strDate[j]=tempDate;
+  i++;
+  j--;
+  }
+  }while(i<=j); //当两者交错时停止
+
+  if(i<right){
+  quickSort(strDate,i,right);//从
+  }
+  if(j>left){
+  quickSort(strDate,left,j);
+  }
+  }
+  /**
+    * @param args
+    */
+  public static void main(String[] args){
+  String[] strVoid=new String[]{"11","66","22","0","55","22","0","32"};
+  QuickSort sort=new QuickSort();
+  sort.quickSort(strVoid,0,strVoid.length-1);
+  for(int i=0;i<strVoid.length;i++){
+  System.out.println(strVoid[i]+" ");
+  }
+  }
+
+
+  }
+
+
+11、有数组a[n]，用java代码将数组元素顺序颠倒
+
+  //用下面的也可以
+  //for(int i=0,int j=a.length-1;i<j;i++,j--) 是否等效于 for(int i=0;i<a.length/2;i++)呢？
+
+  import java.util.Arrays;
+
+  public class SwapDemo{
+
+  public static void main(String[] args){
+    int [] a = new int[]{
+            (int)(Math.random() * 1000),
+            (int)(Math.random() * 1000),
+            (int)(Math.random() * 1000),
+            (int)(Math.random() * 1000),						
+            (int)(Math.random() * 1000)																		
+    };
+
+    System.out.println(a);
+    System.out.println(Arrays.toString(a));
+    swap(a);
+    System.out.println(Arrays.toString(a));		
+  }
+
+  public static void swap(int a[]){
+    int len = a.length;
+    for(int i=0;i<len/2;i++){
+      int tmp = a[i];
+      a[i] = a[len-1-i];
+      a[len-1-i] = tmp;
+    }
+  }
+  } 
+12．金额转换，阿拉伯数字的金额转换成中国传统的形式如：（￥1011）－>（一千零一拾一元整）输出。 
+  去零的代码：
+  return sb.reverse().toString().replaceAll("零[拾佰仟]","零").replaceAll("零+万","万").replaceAll("零+元","元").replaceAll("零+","零");
+
+  public class RenMingBi {
+
+  /**
+   * @param args add by zxx ,Nov 29, 2008
+   */
+  private static final char[] data = new char[]{
+      '零','壹','贰','叁','肆','伍','陆','柒','捌','玖'
+    };
+  private static final char[] units = new char[]{
+    '元','拾','佰','仟','万','拾','佰','仟','亿'
+  };
+  public static void main(String[] args) {
+    // TODO Auto-generated method stub
+    System.out.println(
+        convert(135689123));
+  }
+
+  public static String convert(int money)
+  {
+    StringBuffer sbf = new StringBuffer();
+    int unit = 0;
+    while(money!=0)
+    {
+      sbf.insert(0,units[unit++]);
+      int number = money%10;
+      sbf.insert(0, data[number]);
+      money /= 10;
+    }
+
+    return sbf.toString();
+  }
+  } 
+  1.    请描述下Activity的生命周期。
+        必调用的三个方法：onCreate() --> onStart() --> onResume()，用AAA表示
+
+  （1）父Activity启动子Activity，子Actvity退出，父Activity调用顺序如下
+  AAA --> onFreeze() --> onPause() --> onStop() --> onRestart() --> onStart(),onResume() …
+  （2）用户点击Home，Actvity调用顺序如下
+  AAA --> onFreeze() --> onPause() --> onStop() -- Maybe --> onDestroy() – Maybe
+  （3）调用finish()， Activity调用顺序如下
+  AAA --> onPause() --> onStop() --> onDestroy()
+  （4）在Activity上显示dialog， Activity调用顺序如下
+  AAA
+  （5）在父Activity上显示透明的或非全屏的activity，Activity调用顺序如下
+  AAA --> onFreeze() --> onPause()
+  （6）设备进入睡眠状态，Activity调用顺序如下
+  AAA --> onFreeze() --> onPause()
+
+  2.    如果后台的Activity由于某原因被系统回收了，如何在被系统回收之前保存当前状态？
+
+        onSaveInstanceState()
+
+        当你的程序中某一个Activity A在运行时，主动或被动地运行另一个新的Activity B，这个时候A会执行onSaveInstanceState()。B完成以后又会来找A，这个时候就有两种情况：一是A被回收，二是A没有被回收，被回收的A就要重新调用onCreate()方法，不同于直接启动的是这回onCreate()里是带上了参数savedInstanceState；而没被收回的就直接执行onResume()，跳过onCreate()了。 
+
+  3.    如何将一个Activity设置成窗口的样式。
+
+        在AndroidManifest.xml 中定义Activity的地方一句话android:theme="@android:style/Theme.Dialog"或android:theme="@android:style/Theme.Translucent"就变成半透明的
+
+  4.    如何退出Activity？如何安全退出已调用多个Activity的Application？
+
+  对于单一Activity的应用来说，退出很简单，直接finish()即可。
+  当然，也可以用killProcess()和System.exit()这样的方法。
+
+  但是，对于多Activity的应用来说，在打开多个Activity后，如果想在最后打开的Activity直接退出，上边的方法都是没有用的，因为上边的方法都是结束一个Activity而已。
+  当然，网上也有人说可以。
+  就好像有人问，在应用里如何捕获Home键，有人就会说用keyCode比较KEYCODE_HOME即可，而事实上如果不修改framework，根本不可能做到这一点一样。
+  所以，最好还是自己亲自试一下。
+
+  那么，有没有办法直接退出整个应用呢？
+  在2.1之前，可以使用ActivityManager的restartPackage方法。
+  它可以直接结束整个应用。在使用时需要权限android.permission.RESTART_PACKAGES。
+  注意不要被它的名字迷惑。
+
+  可是，在2.2，这个方法失效了。
+  在2.2添加了一个新的方法，killBackgroundProcesses()，需要权限 android.permission.KILL_BACKGROUND_PROCESSES。
+  可惜的是，它和2.2的restartPackage一样，根本起不到应有的效果。
+
+  另外还有一个方法，就是系统自带的应用程序管理里，强制结束程序的方法，forceStopPackage()。
+  它需要权限android.permission.FORCE_STOP_PACKAGES。
+  并且需要添加android:sharedUserId="android.uid.system"属性
+  同样可惜的是，该方法是非公开的，他只能运行在系统进程，第三方程序无法调用。
+  因为需要在Android.mk中添加LOCAL_CERTIFICATE := platform。
+  而Android.mk是用于在Android源码下编译程序用的。
+
+  从以上可以看出，在2.2，没有办法直接结束一个应用，而只能用自己的办法间接办到。
+
+  现提供几个方法，供参考：
+
+  1、抛异常强制退出：
+  该方法通过抛异常，使程序Force Close。
+  验证可以，但是，需要解决的问题是，如何使程序结束掉，而不弹出Force Close的窗口。
+
+  2、记录打开的Activity：
+  每打开一个Activity，就记录下来。在需要退出时，关闭每一个Activity即可。
+
+  3、发送特定广播：
+  在需要结束应用时，发送一个特定的广播，每个Activity收到广播后，关闭即可。
+
+  4、递归退出
+  在打开新的Activity时使用startActivityForResult，然后自己加标志，在onActivityResult中处理，递归关闭。
+
+  除了第一个，都是想办法把每一个Activity都结束掉，间接达到目的。
+  但是这样做同样不完美。
+  你会发现，如果自己的应用程序对每一个Activity都设置了nosensor，在两个Activity结束的间隙，sensor可能有效了。
+  但至少，我们的目的达到了，而且没有影响用户使用。
+
+  为了编程方便，最好定义一个Activity基类，处理这些共通问题。
+
+  5.    请介绍下Android中常用的五种布局。
+
+  FrameLayout（框架布局），LinearLayout （线性布局），AbsoluteLayout（绝对布局），RelativeLayout（相对布局），TableLayout（表格布局）
+
+  6.    请介绍下Android的数据存储方式。
+
+  一.SharedPreferences方式
+
+  二.文件存储方式
+
+  三.SQLite数据库方式
+
+  四.内容提供器（Content provider）方式
+
+  五. 网络存储方式
+
+  7.    请介绍下ContentProvider是如何实现数据共享的。
+
+  创建一个属于你自己的Content provider或者将你的数据添加到一个已经存在的Content provider中，前提是有相同数据类型并且有写入Content provider的权限。
+
+      如何启用Service，如何停用Service。
+
+
+  Android中的service类似于windows中的service，service一般没有用户操作界面，它运行于系统中不容易被用户发觉，
+
+
+  可以使用它开发如监控之类的程序。
+
+
+  一。步骤
+
+
+  第一步：继承Service类
+
+
+  public class SMSService extends Service { }
+
+
+  第二步：在AndroidManifest.xml文件中的<application>节点里对服务进行配置:
+
+
+  <service android:name=".DemoService" />
+
+
+  二。Context.startService()和Context.bindService
+
+
+  服务不能自己运行，需要通过调用Context.startService()或Context.bindService()方法启动服务。这两个方法都可
+
+
+  以启动Service，但是它们的使用场合有所不同。
+
+
+  1.使用startService()方法启用服务，调用者与服务之间没有关连，即使调用者退出了，服务仍然运行。
+
+
+  使用bindService()方法启用服务，调用者与服务绑定在了一起，调用者一旦退出，服务也就终止。
+
+
+  2.采用Context.startService()方法启动服务，在服务未被创建时，系统会先调用服务的onCreate()方法，
+
+
+  接着调用onStart()方法。如果调用startService()方法前服务已经被创建，多次调用startService()方法并
+
+
+  不会导致多次创建服务，但会导致多次调用onStart()方法。
+
+
+  采用startService()方法启动的服务，只能调用Context.stopService()方法结束服务，服务结束时会调用
+
+
+  onDestroy()方法。
+
+
+
+  3.采用Context.bindService()方法启动服务，在服务未被创建时，系统会先调用服务的onCreate()方法，
+
+
+  接着调用onBind()方法。这个时候调用者和服务绑定在一起，调用者退出了，系统就会先调用服务的onUnbind()方法，
+
+
+  。接着调用onDestroy()方法。如果调用bindService()方法前服务已经被绑定，多次调用bindService()方法并不会
+
+
+  导致多次创建服务及绑定(也就是说onCreate()和onBind()方法并不会被多次调用)。如果调用者希望与正在绑定的服务
+
+
+  解除绑定，可以调用unbindService()方法，调用该方法也会导致系统调用服务的onUnbind()-->onDestroy()方法。
+
+
+  三。Service的生命周期
+
+
+  1.Service常用生命周期回调方法如下：
+
+
+
+  onCreate() 该方法在服务被创建时调用，该方法只会被调用一次，无论调用多少次startService()或bindService()方法，
+
+
+  服务也只被创建一次。 onDestroy()该方法在服务被终止时调用。
+
+
+
+  2. Context.startService()启动Service有关的生命周期方法
+
+
+  onStart() 只有采用Context.startService()方法启动服务时才会回调该方法。该方法在服务开始运行时被调用。
+
+
+  多次调用startService()方法尽管不会多次创建服务，但onStart() 方法会被多次调用。
+
+
+
+  3. Context.bindService()启动Service有关的生命周期方法
+
+
+  onBind()只有采用Context.bindService()方法启动服务时才会回调该方法。该方法在调用者与服务绑定时被调用，
+
+
+  当调用者与服务已经绑定，多次调用Context.bindService()方法并不会导致该方法被多次调用。
+
+
+  onUnbind()只有采用Context.bindService()方法启动服务时才会回调该方法。该方法在调用者与服务解除绑定时被调用。
+
+
+  备注：
+
+
+  1. 采用startService()启动服务
+
+
+       Intent intent = new Intent(DemoActivity.this, DemoService.class);
+
+
+       startService(intent);
+
+
+  2.Context.bindService()启动
+
+
+      Intent intent = new Intent(DemoActivity.this, DemoService.class);
+
+
+      bindService(intent, conn, Context.BIND_AUTO_CREATE);
+
+
+     //unbindService(conn);//解除绑定
+
+      注册广播有几种方式，这些方式有何优缺点？请谈谈Android引入广播机制的用意。
+
+    Android广播机制（两种注册方法）
+
+  在android下，要想接受广播信息，那么这个广播接收器就得我们自己来实现了，我们可以继承BroadcastReceiver，就可以有一个广播接受器了。有个接受器还不够，我们还得重写BroadcastReceiver里面的onReceiver方法，当来广播的时候我们要干什么，这就要我们自己来实现，不过我们可以搞一个信息防火墙。具体的代码：
+
+
+
+  public class SmsBroadCastReceiver extends BroadcastReceiver    
+
+  {   
+
+
+
+      @Override  
+
+      public void onReceive(Context context, Intent intent)   
+
+      {   
+
+          Bundle bundle = intent.getExtras();   
+
+          Object[] object = (Object[])bundle.get("pdus");   
+
+          SmsMessage sms[]=new SmsMessage[object.length];   
+
+          for(int i=0;i<object.length;i++)   
+
+          {   
+
+              sms[0] = SmsMessage.createFromPdu((byte[])object[i]);   
+
+              Toast.makeText(context, "来自"+sms[i].getDisplayOriginatingAddress()+" 的消息是："+sms[i].getDisplayMessageBody(), Toast.LENGTH_SHORT).show();   
+
+          }   
+
+          //终止广播，在这里我们可以稍微处理，根据用户输入的号码可以实现短信防火墙。   
+
+          abortBroadcast();   
+
+      }   
+
+
+
+  }  
+
+
+
+    当实现了广播接收器，还要设置广播接收器接收广播信息的类型，这里是信息：android.provider.Telephony.SMS_RECEIVED
+
+
+
+    我们就可以把广播接收器注册到系统里面，可以让系统知道我们有个广播接收器。这里有两种，一种是代码动态注册：
+
+
+
+  //生成广播处理   
+
+  smsBroadCastReceiver = new SmsBroadCastReceiver();   
+
+  //实例化过滤器并设置要过滤的广播   
+
+
+
+  IntentFilter intentFilter = new IntentFilter("android.provider.Telephony.SMS_RECEIVED");
+
+
+
+  //注册广播   
+
+  BroadCastReceiverActivity.this.registerReceiver(smsBroadCastReceiver, intentFilter);  
+
+  一种是在AndroidManifest.xml中配置广播
+
+
+
+  <?xml version="1.0" encoding="utf-8"?>  
+
+  <manifest xmlns:android="http://schemas.android.com/apk/res/android"  
+
+        package="spl.broadCastReceiver"  
+
+        android:versionCode="1"  
+
+        android:versionName="1.0">  
+
+      <application android:icon="@drawable/icon" android:label="@string/app_name">  
+
+          <activity android:name=".BroadCastReceiverActivity"  
+
+                    android:label="@string/app_name">  
+
+              <intent-filter>  
+
+                  <action android:name="android.intent.action.MAIN" />  
+
+                  <category android:name="android.intent.category.LAUNCHER" />  
+
+              </intent-filter>  
+
+          </activity>  
+
+
+
+          <!--广播注册-->  
+
+          <receiver android:name=".SmsBroadCastReceiver">  
+
+              <intent-filter android:priority="20">  
+
+                  <action android:name="android.provider.Telephony.SMS_RECEIVED"/>  
+
+              </intent-filter>  
+
+          </receiver>  
+
+
+
+      </application>  
+
+
+
+      <uses-sdk android:minSdkVersion="7" />  
+
+
+
+      <!-- 权限申请 -->  
+
+      <uses-permission android:name="android.permission.RECEIVE_SMS"></uses-permission>  
+
+
+
+  </manifest>   
+
+
+
+    两种注册类型的区别是：
+
+
+
+       1)第一种不是常驻型广播，也就是说广播跟随程序的生命周期。
+
+
+
+       2)第二种是常驻型，也就是说当应用程序关闭后，如果有信息广播来，程序也会被系统调用自动运行。
+
+      请解释下在单线程模型中Message、Handler、Message Queue、Looper之间的关系。
+
+
+  Handler简介：
+  一个Handler允许你发送和处理Message和Runable对象，这些对象和一个线程的MessageQueue相关联。每一个线程实例和一个单独的线程以及该线程的MessageQueue相关联。当你创建一个新的Handler时，它就和创建它的线程绑定在一起了。这里，线程我们也可以理解为线程的MessageQueue。从这一点上来看，Handler把Message和Runable对象传递给MessageQueue，而且在这些对象离开MessageQueue时，Handler负责执行他们。
+
+  Handler有两个主要的用途：（1）确定在将来的某个时间点执行一个或者一些Message和Runnable对象。（2）在其他线程（不是Handler绑定线程）中排入一些要执行的动作。
+
+  Scheduling Message，即（1），可以通过以下方法完成：
+  post(Runnable):Runnable在handler绑定的线程上执行，也就是说不创建新线程。
+  postAtTime(Runnable,long):
+  postDelayed(Runnable,long):
+  sendEmptyMessage(int):
+  sendMessage(Message):
+  sendMessageAtTime(Message,long):
+  sendMessageDelayed(Message,long):
+  post这个动作让你把Runnable对象排入MessageQueue,MessageQueue受到这些消息的时候执行他们，当然以一定的排序。sendMessage这个动作允许你把Message对象排成队列，这些Message对象包含一些信息，Handler的hanlerMessage(Message)会处理这些Message.当然，handlerMessage(Message)必须由Handler的子类来重写。这是编程人员需要作的事。
+
+  当posting或者sending到一个Hanler时，你可以有三种行为：当MessageQueue准备好就处理，定义一个延迟时间，定义一个精确的时间去处理。后两者允许你实现timeout,tick,和基于时间的行为。
+
+  当你的应用创建一个新的进程时，主线程（也就是UI线程）自带一个MessageQueue，这个MessageQueue管理顶层的应用对象（像activities,broadcast receivers等）和主线程创建的窗体。你可以创建自己的线程，并通过一个Handler和主线程进行通信。这和之前一样，通过post和sendmessage来完成，差别在于在哪一个线程中执行这么方法。在恰当的时候，给定的Runnable和Message将在Handler的MessageQueue中被Scheduled。
+
+
+  Message简介：
+  Message类就是定义了一个信息，这个信息中包含一个描述符和任意的数据对象，这个信息被用来传递给Handler.Message对象提供额外的两个int域和一个Object域，这可以让你在大多数情况下不用作分配的动作。
+  尽管Message的构造函数是public的，但是获取Message实例的最好方法是调用Message.obtain(),或者Handler.obtainMessage()方法，这些方法会从回收对象池中获取一个。
+
+
+  MessageQueue简介：
+  这是一个包含message列表的底层类。Looper负责分发这些message。Messages并不是直接加到一个MessageQueue中，而是通过MessageQueue.IdleHandler关联到Looper。
+  你可以通过Looper.myQueue()从当前线程中获取MessageQueue。
+
+
+  Looper简介：
+  Looper类被用来执行一个线程中的message循环。默认情况，没有一个消息循环关联到线程。在线程中调用prepare()创建一个Looper，然后用loop()来处理messages，直到循环终止。
+
+  大多数和message loop的交互是通过Handler。
+
+  下面是一个典型的带有Looper的线程实现。
+    class LooperThread extends Thread {
+        public Handler mHandler;
+
+        public void run() {
+            Looper.prepare();
+
+            mHandler = new Handler() {
+                public void handleMessage(Message msg) {
+                    // process incoming messages here
+                }
+            };
+
+            Looper.loop();
+        }
+    }
+
+
+
+      AIDL的全称是什么？如何工作？能处理哪些类型的数据？
+
+  AIDL的英文全称是Android Interface Define Language
+  当A进程要去调用B进程中的service时，并实现通信，我们通常都是通过AIDL来操作的
+
+  A工程：
+
+  首先我们在net.blogjava.mobile.aidlservice包中创建一个RemoteService.aidl文件，在里面我们自定义一个接口，含有方法get。ADT插件会在gen目录下自动生成一个RemoteService.java文件，该类中含有一个名为RemoteService.stub的内部类，该内部类中含有aidl文件接口的get方法。
+
+  说明一：aidl文件的位置不固定，可以任意
+
+  然后定义自己的MyService类，在MyService类中自定义一个内部类去继承RemoteService.stub这个内部类，实现get方法。在onBind方法中返回这个内部类的对象，系统会自动将这个对象封装成IBinder对象，传递给他的调用者。
+
+  其次需要在AndroidManifest.xml文件中配置MyService类，代码如下：
+
+  <!-- 注册服务 -->  
+
+  <service android:name=".MyService">
+
+     <intent-filter>
+
+     <!--  指定调用AIDL服务的ID  -->
+
+         <action android:name="net.blogjava.mobile.aidlservice.RemoteService" />
+
+      </intent-filter>
+
+  </service>
+
+  为什么要指定调用AIDL服务的ID,就是要告诉外界MyService这个类能够被别的进程访问，只要别的进程知道这个ID，正是有了这个ID,B工程才能找到A工程实现通信。
+
+  说明：AIDL并不需要权限
+
+  B工程：
+
+        首先我们要将A工程中生成的RemoteService.java文件拷贝到B工程中，在bindService方法中绑定aidl服务
+
+        绑定AIDL服务就是将RemoteService的ID作为intent的action参数。
+
+        说明：如果我们单独将RemoteService.aidl文件放在一个包里，那个在我们将gen目录下的该包拷贝到B工程中。如果我们将RemoteService.aidl文件和我们的其他类存放在一起，那么我们在B工程中就要建立相应的包，以保证RmoteService.java文件的报名正确，我们不能修改RemoteService.java文件
+
+             bindService(new Inten("net.blogjava.mobile.aidlservice.RemoteService"), serviceConnection, Context.BIND_AUTO_CREATE);
+
+         ServiceConnection的onServiceConnected(ComponentName name, IBinder service)方法中的service参数就是A工程中MyService类中继承了RemoteService.stub类的内部类的对象。
+
+  12.    请解释下Android程序运行时权限与文件系统权限的区别。
+        运行时权限是Dalvik授权
+        文件系统权限是 linux 内核授权
+        http://blog.sina.com.cn/s/blog_624012330100ynit.html
+
+  13.    系统上安装了多种浏览器，能否指定某浏览器访问指定页面？请说明原由。
+
+          一、启动android默认浏览器
+          在Android程序中我们可以通过发送隐式Intent来启动系统默认的浏览器。如果手机本身安装了多个浏览器而又没有设置默认浏览器的话，系统将让用户选择使用哪个浏览器来打开连接。关于Intent的更多内容请参考《常用Intent》
+          示例1
+
+
+                  Intent intent =newIntent();
+                  intent.setAction("android.intent.action.VIEW");
+                  Uri content_url =Uri.parse("http://www.163.com");
+                  intent.setData(content_url);
+                  startActivity(intent);
+          这样子，android就可以调用起手机默认的浏览器访问。
+          二、启动指定浏览器
+          在Android程序中我们可以通过发送显式Intent来启动指定的浏览器。
+          启动Android原生浏览器
+          示例2
+
+
+                   Intent intent =newIntent();        
+                   intent.setAction("android.intent.action.VIEW");    
+                   Uri content_url =Uri.parse("http://www.163.com");   
+                   intent.setData(content_url);           
+                   intent.setClassName("com.android.browser","com.android.browser.BrowserActivity");   
+                   startActivity(intent);
+          只要修改以intent.setClassName("com.android.browser","com.android.browser.BrowserActivity");
+          中相应的应用程序packagename 和要启动的activity即可启动其他浏览器来
+          uc浏览器"："com.uc.browser", "com.uc.browser.ActivityUpdate“
+          opera浏览器："com.opera.mini.android", "com.opera.mini.android.Browser"
+          qq浏览器："com.tencent.mtt", "com.tencent.mtt.MainActivity"
+
+
+
+  14.    有一个一维整型数组int[]data保存的是一张宽为width，高为height的图片像素值信息。请写一个算法，将该图片所有的白色不透明(0xffffffff)像素点的透明度调整为50%。
+
+
+
+  15.    你如何评价Android系统？优缺点。 
