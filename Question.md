@@ -1,20 +1,18 @@
-```
-App的生命周期是什么；
 四大组件很熟悉了吧，
 ContentProvider的生命周期是什么；
+http://www.cnblogs.com/bravestarrhu/archive/2012/05/02/2479461.html
 Android设备开机的启动过程；
+http://blog.jobbole.com/67931/
 Activity的视图层次是什么？
 打开一个对话框的时候，这个对话框是如何加入到视图上去的？
 Dialog、PopupWindow、WindowManager加载视图的区别；
 Service与Thread的区别；
 ServiceManager、ActivityManager、XXXManager是干什么的；
 为什么一定要在UI线程更新视图，为什么要这么设计；
-能不能直接New一个Activity并启动它；
 打包APK的过程干了什么；
 安装APK的过程干了什么；
 启动APK的过程干了什么；
 怎么玩DexLoader（动态升级）；
-MVP模式是啥；
 View的生命周期是啥；
 TWEEN动画跟熟悉动画在View的绘制过程是怎么作用的；
 自定义动画玩过吗，里面的Matrix怎么控制。
@@ -34,7 +32,7 @@ FrameWork 层的每个类都折腾了？
 Hook 会玩了？
 各种 SystemService 也知道怎么运行的了？
 View 的渲染你明白是怎么回事了？
-Intent 是如何实现 Activity、Service 等之间的解耦合的？
+Intent 是如何实现 1 等之间的解耦合的？
 单元测试会写了？
 Monkey 能跑多长时间？
 性能测试通过了？
@@ -49,8 +47,6 @@ Handler 、Message 和 Looper 是怎么跑起来的？
 2、 Handler在项目怎么用的，线程间如何通信的
 
 3、 AsyncTask和AsyncQueryHandler
-
-4、 HttpClient,HttpUrlConnection的区别
 
 5、 消息推送机制xmpp协议，客户端发送服务器好处理，只要知道服务器IP就可以，服务器如何给客户端推送消息呢
 
