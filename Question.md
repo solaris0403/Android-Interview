@@ -71,10 +71,3 @@ Handler 、Message 和 Looper 是怎么跑起来的？
 15、 android ui的几个概念：px,dip(dp),sp,dpi,分辨率等，dpi是在Android资源随着不同手机的分辨率自动进行适配，res-》drawable-hdpi
 
 16、 Launcher如何设置壁纸
-
-17、 baiduMap如何用，用百度地图的坐标为甚么显示pc会出现很大的偏差，如何避免呢？
-
-18、 哪个项目是你印象最深
-
-19、 Xml中head和body有什么联系
-```
